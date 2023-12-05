@@ -1,38 +1,47 @@
-﻿using Warehouse;
-
-
-namespace WareHouse
+﻿using System;
+namespace Warehouse
 {
-
     public class WareHouse
     {
-
         private List<Stock> _stockOfItems;
-        public void WareHouseSimulator()
-        {
-            _stockOfItems = new();
-            Stock item1 = new("Hat", 2);
-            Stock item2 = new("Shoes", 3);
-            Stock item3 = new("Jacket", 5);
-
-            _stockOfItems.Add(item1);
-            _stockOfItems.Add(item2);
-            _stockOfItems.Add(item3);
-        }
 
         public WareHouse()
         {
 
         }
 
+        public void WareHouseSimulator()
+        {
+            _stockOfItems = new List<Stock>();
+            Stock item1 = new Stock("Hat", 2);
+            Stock item2 = new Stock("Shoes", 3);
+            Stock item3 = new Stock("Jacket", 5);
+            Stock item4 = new Stock("Hat", 3);
+
+            _stockOfItems.Add(item1);
+            _stockOfItems.Add(item2);
+            _stockOfItems.Add(item3);
+            _stockOfItems.Add(item4);
+        }
+
         public void AddToStocks(string itemName, int itemCount)
         {
-            Stock stock = new(itemName, itemCount);
+            if (_stockOfItems == null)
+            {
+                _stockOfItems = new List<Stock>();
+            }
+            Stock stock = new Stock(itemName, itemCount);
             _stockOfItems.Add(stock);
         }
 
         public bool InStock(string itemName)
         {
+            // Checking if _stockOfItems is null
+            if (_stockOfItems == null)
+            {
+                return false;
+            }
+
             return _stockOfItems.Any(item => item.ItemName == itemName && item.Quantity > 0);
         }
 
@@ -42,22 +51,25 @@ namespace WareHouse
             if (InStock(itemName))
             {
 
-                stock = _stockOfItems.FirstOrDefault(item => item.Quantity > 0);
+                stock = _stockOfItems.FirstOrDefault(item => item.Quantity > 0 && item.ItemName == itemName);
                 stock.Quantity -= quantity;
             }
             else
             {
-                throw new Exception("Oversold " + stock.ItemName);
+                throw new Exception("Oversold" + stock.ItemName);
             }
         }
 
         public int StockCount(string itemName)
         {
             var matches = _stockOfItems.Where(item => item.ItemName == itemName);
-            return matches.Count();
+            int count = 0;
+            foreach (var item in matches)
+            {
+                count += item.Quantity;
+            }
+            return count;
         }
-
     }
-
 }
 

@@ -23,28 +23,31 @@ namespace TestingTodoListApp
             //string defaultTask = $"Task number {_taskCounter}"; // remove
             //TodoTask item = new(defaultTask);
         }
+
         public void AddItemToList(TodoTask item)
         {
             _taskCounter++;
-            _tasks.Add(item with { Id = _taskCounter});
-
+            _tasks.Add(item with { Id = _taskCounter });
         }
 
         public void RemoveItemFromList(TodoTask item)
         {
+
             if (_tasks.Contains(item))
             {
                 _tasks.Remove(item with { Id = _taskCounter-- });
 
             }
-
         }
 
         public void CompleteItem(int id)
         {
             // remove the item
-            var item = _tasks.First(x => x.Id == id);
-            RemoveItemFromList(item);
+            TodoTask? item = _tasks.FirstOrDefault(x => x.Id == id);
+            if (item != null)
+            {
+                RemoveItemFromList(item);
+            }
         }
     }
 }

@@ -13,19 +13,18 @@ namespace TodoListNS
 
         public static void Main()
         {
-            TodoList todoList = new ();
+            TodoList todoList = new TodoList();
 
-            todoList.AddItemToList(new TodoTask("Do the dishes"));
-          
-            todoList.AddItemToList(new TodoTask("Wash your clothes"));
-            var list = todoList.All; //for iterations
-            var anotherList = todoList._TodoItems; //original style of getting list
-            foreach (var item in list)
+            todoList.AddItemToList(new TodoTask("Do the dishes", new DateTime()));
+            todoList.AddItemToList(new TodoTask("Wash your clothes",new DateTime()));
+            IEnumerable<TodoTask> list = todoList.All; //for iterations
+            List<TodoTask> anotherList = todoList._TodoItems; //original style of getting list
+            foreach (TodoTask item in list)
             {
                 Console.WriteLine(item);
             }
 
-            foreach (var item in anotherList)
+            foreach (TodoTask item in anotherList)
             {
                 Console.WriteLine(item);
             }
